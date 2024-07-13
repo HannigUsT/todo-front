@@ -68,7 +68,7 @@ li {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 20px;
+  padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -181,7 +181,9 @@ input {
 
 .btn-concluir,
 .btn-editar,
-.btn-excluir {
+.btn-excluir,
+.btn-reverter,
+.btn-salvar {
   background-color: #4caf50; /* Cor de fundo dos botões */
   color: white; /* Cor do texto dos botões */
   border: none;
@@ -193,18 +195,60 @@ input {
 
 .btn-concluir:hover,
 .btn-editar:hover,
-.btn-excluir:hover {
-  background-color: #45a049; /* Cor de fundo dos botões ao passar o mouse */
+.btn-excluir:hover,
+.btn-reverter:hover,
+.btn-salvar:hover {
+  background-color: #45a049;
 }
 
 .btn-concluir {
-  background-color: #008cba; /* Cor de fundo específica para botão Concluir */
+  background-color: #008cba;
 }
 
 .btn-editar {
-  background-color: #f1c40f; /* Cor de fundo específica para botão Editar */
+  background-color: #f1c40f;
 }
 
 .btn-excluir {
-  background-color: #f44336; /* Cor de fundo específica para botão Excluir */
+  background-color: #f44336;
+}
+
+.btn-reverter {
+  background-color: #e67e22;
+}
+
+.btn-reverter:hover {
+  background-color: #d35400;
+}
+
+.btn-salvar {
+  background-color: #4caf50;
+}
+
+.btn-salvar:hover {
+  background-color: #45a049;
+}
+
+.btn-sim,
+.btn-nao {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.btn-sim:hover,
+.btn-nao:hover {
+  background-color: #45a049;
+}
+
+.btn-nao {
+  background-color: #f44336;
+}
+
+.btn-nao:hover {
+  background-color: #d32f2f;
 }

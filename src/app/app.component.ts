@@ -21,6 +21,7 @@ const backendAPI = 'http://localhost:5000/api/todo';
   imports: [CommonModule, FormsModule],
 })
 export class AppComponent implements OnInit {
+  [x: string]: any;
   title = 'Quadro de Atividades';
   username = 'employee';
   password = 'employee_password';
@@ -30,8 +31,10 @@ export class AppComponent implements OnInit {
   atividadeBuscada: Atividade | null = null;
   modalCriarAberto = false;
   modalEditarAberto = false;
+  modalConfirmacao = false;
   atividadeParaEditar: Atividade | null = null;
   mensagemErro: string | null = null;
+  acaoConfirmada: () => void = () => {};
 
   ngOnInit(): void {
     this.buscarAtividades();
@@ -43,12 +46,17 @@ export class AppComponent implements OnInit {
         auth: { username: this.username, password: this.password },
       });
 
-      this.atividadesNaoConcluidas = unfinishedResponse.data.data;
+      this.atividadesNaoConcluidas = Array.isArray(unfinishedResponse.data.data)
+        ? unfinishedResponse.data.data
+        : [];
 
       const finishedResponse = await axios.get(`${backendAPI}/finished`, {
         auth: { username: this.username, password: this.password },
       });
-      this.atividadesConcluidas = finishedResponse.data;
+
+      this.atividadesConcluidas = Array.isArray(finishedResponse.data.data)
+        ? finishedResponse.data.data
+        : [];
     } catch (error) {
       this.exibirMensagemErro('Erro ao buscar atividades');
     }
@@ -66,32 +74,31 @@ export class AppComponent implements OnInit {
       );
       this.atividadesNaoConcluidas.push(response.data);
       this.fecharModalCriar();
-      await this.buscarAtividades(); // Atualiza a lista após criar a atividade
+      await this.buscarAtividades();
     } catch (error) {
       this.exibirMensagemErro('Erro ao criar atividade');
     }
   }
 
-  async concluirAtividade(id: number) {
+  async concluirAtividade(atividade: Atividade) {
     try {
-      const response = await axios.put(`${backendAPI}/finish/${id}`, null, {
-        auth: { username: this.username, password: this.password },
-      });
+      const response = await axios.put(
+        `${backendAPI}/finish/${atividade.id}`,
+        {},
+        {
+          auth: { username: this.username, password: this.password },
+        }
+      );
 
-      const atividade = this.atividadesNaoConcluidas.find((a) => a.id === id);
-      if (atividade) {
-        atividade.conclusao = true;
-        atividade.dataConclusao = response.data.dataConclusao;
-        this.atividadesConcluidas.push(atividade);
-        this.atividadesNaoConcluidas = this.atividadesNaoConcluidas.filter(
-          (a) => a.id !== id
-        );
-      }
+      const atividadeConcluida: Atividade = response.data.data;
+      this.atividadesConcluidas.push(atividadeConcluida);
+      this.atividadesNaoConcluidas = this.atividadesNaoConcluidas.filter(
+        (a) => a.id !== atividade.id
+      );
     } catch (error) {
       this.exibirMensagemErro('Erro ao concluir atividade');
     }
   }
-
   async excluirAtividade(id: number) {
     try {
       await axios.delete(`${backendAPI}/delete/${id}`, {
@@ -103,6 +110,7 @@ export class AppComponent implements OnInit {
       this.atividadesConcluidas = this.atividadesConcluidas.filter(
         (a) => a.id !== id
       );
+      this.fecharModalConfirmacao();
     } catch (error) {
       this.exibirMensagemErro('Erro ao excluir atividade');
     }
@@ -120,10 +128,12 @@ export class AppComponent implements OnInit {
         { auth: { username: this.username, password: this.password } }
       );
 
+      const atividadeEditada: Atividade = response.data.data;
       this.atividadesNaoConcluidas = this.atividadesNaoConcluidas.map((a) =>
-        a.id === this.atividadeParaEditar?.id ? response.data : a
+        a.id === this.atividadeParaEditar?.id ? atividadeEditada : a
       );
       this.fecharModalEditar();
+      this.fecharModalConfirmacao();
     } catch (error) {
       this.exibirMensagemErro('Erro ao editar atividade');
     }
@@ -141,23 +151,43 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async reverterAtividade(id: number) {
+  async reverterAtividade(atividade: Atividade) {
     try {
-      const response = await axios.put(`${backendAPI}/revert/${id}`, null, {
-        auth: { username: this.username, password: this.password },
-      });
-
-      if (response.data && response.data.data) {
-        const atividade = response.data.data;
-        this.atividadesConcluidas = this.atividadesConcluidas.filter(
-          (a) => a.id !== id
-        );
-        this.atividadesNaoConcluidas.push(atividade);
-      }
+      const response = await axios.put(
+        `${backendAPI}/revert/${atividade.id}`,
+        {},
+        {
+          auth: { username: this.username, password: this.password },
+        }
+      );
+      const atividadeRevertida: Atividade = response.data.data;
+      atividadeRevertida.dataConclusao = null;
+      this.atividadesNaoConcluidas.push(atividadeRevertida);
+      this.atividadesConcluidas = this.atividadesConcluidas.filter(
+        (a) => a.id !== atividade.id
+      );
     } catch (error) {
-      console.error('Erro ao reverter atividade', error);
       this.exibirMensagemErro('Erro ao reverter atividade');
     }
+  }
+
+  fecharModalConfirmacao() {
+    this.modalConfirmacao = false;
+    this.acaoConfirmada = () => {};
+  }
+
+  executarAcaoConfirmada() {
+    this.acaoConfirmada();
+  }
+
+  confirmarSalvarEdicao() {
+    this.acaoConfirmada = this.editarAtividade.bind(this);
+    this.modalConfirmacao = true;
+  }
+
+  confirmarExcluir(id: number) {
+    this.acaoConfirmada = () => this.excluirAtividade(id);
+    this.modalConfirmacao = true;
   }
 
   abrirModalCriar() {

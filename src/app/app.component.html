@@ -24,12 +24,12 @@
     <div class="column">
       <h2>Pendentes</h2>
       <ul>
-        <li *ngFor="let atividade of atividadesNaoConcluidas">
-          <p>{{ atividade.descricao }}</p>
+        <li *ngFor="let atividade of atividadesNaoConcluidas" class="atividade">
+          <p>Descrição: {{ atividade.descricao }}</p>
           <p>Criado em: {{ atividade.dataCriacao | date: 'dd/MM/yyyy HH:mm:ss' : '-03:00' }}</p>
-          <button (click)="concluirAtividade(atividade.id)" class="btn-concluir">Concluir</button>
+          <button (click)="concluirAtividade(atividade)" class="btn-concluir">Concluir</button>
           <button (click)="prepararEdicao(atividade)" class="btn-editar">Editar</button>
-          <button (click)="excluirAtividade(atividade.id)" class="btn-excluir">Excluir</button>
+          <button (click)="confirmarExcluir(atividade.id)" class="btn-excluir">Excluir</button>
         </li>
       </ul>
     </div>
@@ -37,12 +37,12 @@
     <div class="column">
       <h2>Concluídas</h2>
       <ul>
-        <li *ngFor="let atividade of atividadesConcluidas">
-          <p>{{ atividade.descricao }}</p>
-          <p>Criado em: {{ atividade.dataCriacao | date: 'dd/MM/yyyy HH:mm:ss' : '-03:00' }}</p>
-          <p>Concluído em: {{ atividade.dataConclusao | date: 'dd/MM/yyyy HH:mm:ss' : '-03:00' }}</p>
-          <button (click)="reverterAtividade(atividade.id)" class="btn-reverter">Reverter</button>
-          <button (click)="excluirAtividade(atividade.id)" class="btn-excluir">Excluir</button>
+        <li *ngFor="let atividade of atividadesConcluidas" class="atividade">
+          <p>Descrição: {{ atividade.descricao }}</p>
+          <p>Criado em: {{ atividade.dataCriacao | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+          <p>Concluído em: {{ atividade.dataConclusao | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+          <button (click)="reverterAtividade(atividade)" class="btn-reverter">Reverter</button>
+          <button (click)="confirmarExcluir(atividade.id)" class="btn-excluir">Excluir</button>
         </li>
       </ul>
     </div>
@@ -53,11 +53,20 @@
       <span class="close" (click)="fecharModalEditar()">&times;</span>
       <h2>Editar Atividade</h2>
       <input [(ngModel)]="atividadeParaEditar.descricao" placeholder="Editar descrição da atividade" />
-      <button (click)="editarAtividade()">Salvar</button>
+      <button (click)="confirmarSalvarEdicao()" class="btn-salvar">Salvar</button>
     </div>
   </div>
 
   <div *ngIf="mensagemErro" class="mensagem-erro">
     {{ mensagemErro }}
+  </div>
+
+  <div class="modal" *ngIf="modalConfirmacao">
+    <div class="modal-content">
+      <span class="close" (click)="fecharModalConfirmacao()">&times;</span>
+      <h2>Você tem certeza que quer realizar essa ação?</h2>
+      <button (click)="executarAcaoConfirmada()" class="btn-sim">Sim</button>
+      <button (click)="fecharModalConfirmacao()" class="btn-nao">Não</button>
+    </div>
   </div>
 </div>
