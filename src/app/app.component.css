@@ -1,0 +1,210 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: #2d2d2d;
+  color: #fff;
+}
+
+.board {
+  display: flex;
+  justify-content: space-between;
+}
+
+.column {
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  background-color: #3b3b3b;
+  border-radius: 5px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #4c4c4c;
+  border-radius: 5px;
+}
+
+.btn-criar-atividade {
+  background-color: #ff4081;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-criar-atividade:hover {
+  background-color: #e91e63;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.btn-criar {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-criar:hover {
+  background-color: #45a049;
+}
+
+.modal {
+  display: block;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #3b3b3b;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.close {
+  float: right;
+  font-size: 50px;
+  font-weight: bold;
+  color: #f44336;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  text-decoration: none;
+  color: #f44336;
+}
+
+.actions {
+  padding-left: 10%;
+  margin-bottom: 10px;
+}
+
+.mensagem-erro {
+  background-color: #f44336;
+  padding: 10px;
+  border-radius: 5px;
+  position: fixed;
+  top: 80%;
+  right: 20px;
+  z-index: 1000;
+}
+
+.user-auth {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5%;
+  padding-right: 5%;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-auth h2 {
+  text-align: center;
+}
+
+.buscar-atividade {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  padding-left: 10%;
+  margin-top: 10%;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Estilos para os inputs dentro de .user-auth e .modal-content */
+.user-auth input,
+.modal-content input {
+  width: 100%;
+  /* Define a largura dos inputs */
+}
+
+/* Estilos para os inputs específicos de login e senha */
+.user-auth input[type="password"] {
+  /* Personalizações específicas para campos de senha */
+  margin-top: 5px;
+}
+
+.btn-concluir,
+.btn-editar,
+.btn-excluir {
+  background-color: #4caf50; /* Cor de fundo dos botões */
+  color: white; /* Cor do texto dos botões */
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px; /* Espaçamento entre os botões */
+}
+
+.btn-concluir:hover,
+.btn-editar:hover,
+.btn-excluir:hover {
+  background-color: #45a049; /* Cor de fundo dos botões ao passar o mouse */
+}
+
+.btn-concluir {
+  background-color: #008cba; /* Cor de fundo específica para botão Concluir */
+}
+
+.btn-editar {
+  background-color: #f1c40f; /* Cor de fundo específica para botão Editar */
+}
+
+.btn-excluir {
+  background-color: #f44336; /* Cor de fundo específica para botão Excluir */
+}
